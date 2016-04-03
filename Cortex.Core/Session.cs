@@ -37,7 +37,7 @@ namespace Cortex.Core
             {
                 foreach (var element in _processGraph.Elements)
                 {
-                    element.Init();
+                    element.Init(CancellationToken.None);
                 }
             }) {Priority = ThreadPriority.AboveNormal, IsBackground = true };
             _thread.Start();

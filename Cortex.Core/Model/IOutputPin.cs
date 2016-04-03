@@ -6,10 +6,11 @@ namespace Cortex.Core.Model
     {
         IEnumerable<IInputPin> Listeners { get; }
         void AddListener(IInputPin input);
+        void AddListener<TInput>(IInputPin<TInput> input);
         void RemoveListener(IInputPin input);
     }
 
-    interface IOutputPin<in T> : IOutputPin
+    public interface IOutputPin<in T> : IOutputPin
     {
         void Emit(T o);
     }

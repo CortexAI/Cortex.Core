@@ -1,8 +1,12 @@
-using Cortex.Core.Model.Serialization;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Cortex.Core.Model
 {
-    public interface INode : IPersistable
+    public interface INode : IConatinerNode
     {
+        IEnumerable<IInputPin> Inputs { get; }
+        IEnumerable<IOutputPin> Outputs { get; }
+        void Init(CancellationToken token);
     }
 }

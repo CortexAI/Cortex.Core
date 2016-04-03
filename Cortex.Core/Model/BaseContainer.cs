@@ -7,48 +7,48 @@ namespace Cortex.Core.Model
 {
     public abstract class BaseContainer : IContainer
     {
-        private readonly Dictionary<INode, Dictionary<string, object>> _metaData =
-            new Dictionary<INode, Dictionary<string, object>>();
+        private readonly Dictionary<IConatinerNode, Dictionary<string, object>> _metaData =
+            new Dictionary<IConatinerNode, Dictionary<string, object>>();
 
         private List<IConnection> _connections = new List<IConnection>();
-        private List<IElement> _elements = new List<IElement>();
+        private List<INode> _elements = new List<INode>();
 
-        public IEnumerable<IElement> Elements => _elements;
+        public IEnumerable<INode> Elements => _elements;
         public IEnumerable<IConnection> Connections => _connections;
 
-        public event Action<IContainer, IElement> ElementAdded;
-        public event Action<IContainer, IElement> ElementRemoved;
+        public event Action<IContainer, INode> ElementAdded;
+        public event Action<IContainer, INode> ElementRemoved;
         public event Action<IContainer, IConnection> ConnectionAdded;
         public event Action<IContainer, IConnection> ConnectionRemoved;
 
-        public void AddElement(IElement element)
+        public void AddElement(INode node)
         {
-            if (_elements.Contains(element))
-                throw new Exception("Duplicate element");
-            _elements.Add(element);
+            if (_elements.Contains(node))
+                throw new Exception("Duplicate node");
+            _elements.Add(node);
 
             var handler = ElementAdded;
-            handler?.Invoke(this, element);
+            handler?.Invoke(this, node);
         }
 
-        public void RemoveElement(IElement element)
+        public void RemoveElement(INode node)
         {
             IConnection[] relatedConnections =
-                _connections.Where(c => c.StartElement.Equals(element) || c.EndElement.Equals(element)).ToArray();
+                _connections.Where(c => c.StartNode.Equals(node) || c.EndNode.Equals(node)).ToArray();
             foreach (IConnection connection in relatedConnections)
                 RemoveConnection(connection);
-            _elements.Remove(element);
+            _elements.Remove(node);
 
-            if (_metaData.ContainsKey(element))
-                _metaData.Remove(element);
+            if (_metaData.ContainsKey(node))
+                _metaData.Remove(node);
 
             var handler = ElementRemoved;
-            handler?.Invoke(this, element);
+            handler?.Invoke(this, node);
         }
 
         public void AddConnection(IConnection connection)
         {
-            if (!_elements.Contains(connection.StartElement) || !_elements.Contains(connection.EndElement))
+            if (!_elements.Contains(connection.StartNode) || !_elements.Contains(connection.EndNode))
                 throw new Exception("No such elements");
 
             connection.Establish();
@@ -71,12 +71,12 @@ namespace Cortex.Core.Model
             handler?.Invoke(this, connection);
         }
         
-        public T GetMetaData<T>(INode element, string key)
+        public T GetMetaData<T>(IConatinerNode element, string key)
         {
             return (T) _metaData[element][key];
         }
 
-        public IDictionary<string, object> GetMetaData(INode element)
+        public IDictionary<string, object> GetMetaData(IConatinerNode element)
         {
             if (!_metaData.ContainsKey(element))
                 return null;
@@ -84,7 +84,7 @@ namespace Cortex.Core.Model
             return _metaData[element];
         }
 
-        public void SetMetaData<T>(INode element, string key, T value)
+        public void SetMetaData<T>(IConatinerNode element, string key, T value)
         {
             if (!_metaData.ContainsKey(element))
                 _metaData.Add(element, new Dictionary<string, object>());
@@ -96,21 +96,21 @@ namespace Cortex.Core.Model
 
         public void Save(IPersisterWriter persister)
         {
-            persister.Set("Elements", new PersistableCollection<IElement>(Elements));
+            persister.Set("Elements", new PersistableCollection<INode>(Elements));
             persister.Set("Connections", new PersistableCollection<IConnection>(Connections));
 
-            var meta = new PersistableDictionary<INode, PersistableDictionary<string, Object>>();
-            foreach (IElement e in Elements)
+            var meta = new PersistableDictionary<IConatinerNode, PersistableDictionary<string, Object>>();
+            foreach (INode e in Elements)
             {
                 meta.Add(e, new PersistableDictionary<string, object>(GetMetaData(e)));
             }
 
-            persister.Set("Metadata", new PersistableDictionary<INode, PersistableDictionary<string, Object>>(meta));
+            persister.Set("Metadata", new PersistableDictionary<IConatinerNode, PersistableDictionary<string, Object>>(meta));
         }
 
         public void Load(IPersisterReader persister)
         {
-            _elements = persister.Get<PersistableCollection<IElement>>("Elements");
+            _elements = persister.Get<PersistableCollection<INode>>("Elements");
             _connections = persister.Get<PersistableCollection<IConnection>>("Connections");
 
             foreach (IConnection connection in Connections)
@@ -118,7 +118,7 @@ namespace Cortex.Core.Model
                 connection.Establish();
             }
 
-            var meta = persister.Get<PersistableDictionary<INode, PersistableDictionary<string, Object>>>("Metadata");
+            var meta = persister.Get<PersistableDictionary<IConatinerNode, PersistableDictionary<string, Object>>>("Metadata");
 
             foreach (var kvp in meta)
             {

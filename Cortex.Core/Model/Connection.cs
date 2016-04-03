@@ -6,34 +6,37 @@ namespace Cortex.Core.Model
 {
     public class Connection : IConnection
     {
-        public Connection(IElement startElement, IOutputPin startPin, IElement endElement, IInputPin endPin)
-        {
-            StartElement = startElement;
-            EndElement = endElement;
+        private IOutputPin _startPin;
+        private IInputPin _endPin;
 
-            if (!startElement.Outputs.Contains(startPin) || !EndElement.Inputs.Contains(endPin))
+        public Connection(INode startNode, IOutputPin startPin, INode endNode, IInputPin endPin)
+        {
+            StartNode = startNode;
+            EndNode = endNode;
+
+            if (!startNode.Outputs.Contains(startPin) || !EndNode.Inputs.Contains(endPin))
                 throw new InvalidOperationException("Pins not from this elements");
-            StartPin = startPin;
-            EndPin = endPin;
+            _startPin = startPin;
+            _endPin = endPin;
         }
 
         public Connection()
         {
         }
 
-        public IElement StartElement { get; private set; }
+        public INode StartNode { get; private set; }
 
-        public IElement EndElement { get; private set; }
+        public INode EndNode { get; private set; }
 
-        public IOutputPin StartPin { get; private set; }
+        public IOutputPin StartPin => _startPin;
 
-        public IInputPin EndPin { get; private set; }
+        public IInputPin EndPin => _endPin;
 
         public void Establish()
         {
             if (!StartPin.Listeners.Contains(EndPin))
             {
-                StartPin.AddListener(EndPin);
+                _startPin.AddListener(_endPin);
             }
         }
 
@@ -41,24 +44,24 @@ namespace Cortex.Core.Model
         {
             if (StartPin.Listeners.Contains(EndPin))
             {
-                StartPin.RemoveListener(EndPin);
+                _startPin.RemoveListener(_endPin);
             }
         }
 
         public void Save(IPersisterWriter persister)
         {
-            persister.Set("StartElement", StartElement);
-            persister.Set("EndElement", EndElement);
-            persister.Set("StartPin", StartElement.Outputs.ToList().IndexOf(StartPin));
-            persister.Set("EndPin", EndElement.Inputs.ToList().IndexOf(EndPin));
+            persister.Set("startNode", StartNode);
+            persister.Set("endNode", EndNode);
+            persister.Set("StartPin", StartNode.Outputs.ToList().IndexOf(StartPin));
+            persister.Set("EndPin", EndNode.Inputs.ToList().IndexOf(EndPin));
         }
 
         public void Load(IPersisterReader persister)
         {
-            StartElement = persister.Get<IElement>("StartElement");
-            EndElement = persister.Get<IElement>("EndElement");
-            StartPin = StartElement.Outputs.ElementAt(persister.Get<int>("StartPin"));
-            EndPin = EndElement.Inputs.ElementAt(persister.Get<int>("EndPin"));
+            StartNode = persister.Get<INode>("startNode");
+            EndNode = persister.Get<INode>("endNode");
+            _startPin = StartNode.Outputs.ElementAt(persister.Get<int>("StartPin"));
+            _endPin = EndNode.Inputs.ElementAt(persister.Get<int>("EndPin"));
         }
 
         public void Dispose()

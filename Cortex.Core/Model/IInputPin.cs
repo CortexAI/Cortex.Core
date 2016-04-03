@@ -1,10 +1,17 @@
-using System;
+using System.Threading;
 
 namespace Cortex.Core.Model
 {
-    public interface IInputPin : IPin
+    public interface IInputPin: IPin
     {
-        void Handle(object o);
-        event Action<IInputPin, object> AfterPinProcessed;
+        WaitHandle NewItem { get; }
+        void Enqueue(object item);
+    }
+
+    public interface IInputPin<T> : IInputPin
+    {
+        void Enqueue(T item);
+        bool TryGet(out T item);
+        T Get();
     }
 }

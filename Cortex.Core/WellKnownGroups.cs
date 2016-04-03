@@ -6,21 +6,21 @@ namespace Cortex.Core
     public class WellKnownGroups
     {
         [Export]
-        public static ElementGroupDefenition Common = new ElementGroupDefenition("Common");
+        public static NodeGroupDefenition Common = new NodeGroupDefenition("Common");
         
         [Export]
-        public static ElementGroupDefenition MachineLearning = new ElementGroupDefenition("Machine Learning");
+        public static NodeGroupDefenition MachineLearning = new NodeGroupDefenition("Machine Learning");
 
         [Export]
-        public static ElementGroupDefenition Statistics = new ElementGroupDefenition("Statistics");
+        public static NodeGroupDefenition Statistics = new NodeGroupDefenition("Statistics");
 
         [Export]
-        public static ElementGroupDefenition Imaging = new ElementGroupDefenition("Imaging");
+        public static NodeGroupDefenition Imaging = new NodeGroupDefenition("Imaging");
 
         [Export]
-        public static ElementGroupDefenition SignalProcessing = new ElementGroupDefenition("Signal Processing");
+        public static NodeGroupDefenition SignalProcessing = new NodeGroupDefenition("Signal Processing");
 
         [Export]
-        public static ElementGroupDefenition Plugins = new ElementGroupDefenition("Plugins");
+        public static NodeGroupDefenition Plugins = new NodeGroupDefenition("Plugins");
     }
 }

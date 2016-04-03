@@ -1,13 +1,22 @@
 using System;
 using System.Collections.Generic;
+using Cortex.Core.Model.Utilities;
 
 namespace Cortex.Core.Model
 {
     public class OutputPin<T> : IOutputPin<T>
     {
+        public void Emit(T o)
+        {
+            foreach (var listener in _listeners)
+            {
+                listener.Enqueue(o);
+            }
+        }
+
+        public string Name { get; }
+        public Type Type => typeof(T);
         public IEnumerable<IInputPin> Listeners => _listeners;
-        public string Name { get; private set; }
-        public Type Type => typeof (T);
 
         private readonly List<IInputPin> _listeners = new List<IInputPin>();
 
@@ -16,19 +25,14 @@ namespace Cortex.Core.Model
             Name = name;
         }
 
-        public void Emit(T o)
+        public void AddListener(IInputPin input)
         {
-            foreach (var endPoint in _listeners)
+            if (input != null)
             {
-                endPoint.Handle(o);
-            }
-        }
-
-        public void AddListener(IInputPin pin)
-        {
-            if (pin != null)
-            {
-                _listeners.Add(pin);
+                if (typeof (T).IsCastableTo(input.Type))
+                {
+                    _listeners.Add(input);
+                }
             }
             else
             {
@@ -36,11 +40,26 @@ namespace Cortex.Core.Model
             }
         }
 
-        public void RemoveListener(IInputPin pin)
+        public void AddListener<TInput>(IInputPin<TInput> input)
         {
-            if (pin != null && _listeners.Contains(pin))
+            if (input != null)
             {
-                _listeners.Remove(pin);
+                if (typeof (T).IsCastableTo(typeof (TInput)))
+                {
+                    _listeners.Add(input);
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("Can't attach input pin to this");
+            }
+        }
+
+        public void RemoveListener(IInputPin input)
+        {
+            if (input != null && _listeners.Contains(input))
+            {
+                _listeners.Remove(input);
             }
         }
     }

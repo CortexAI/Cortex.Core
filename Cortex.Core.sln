@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Core", "Cortex.Core\Cortex.Core.csproj", "{A11396CD-4666-46C0-8346-9328D1D76D55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Core.Tests", "Cortex.Core.Tests\Cortex.Core.Tests.csproj", "{585769D5-99F7-4833-B8A1-11E1256F3FFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cortex.Core.Demo", "Cortex.Core.Demo\Cortex.Core.Demo.csproj", "{42D438B9-8CAA-4089-A053-6C856C9974EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{A11396CD-4666-46C0-8346-9328D1D76D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A11396CD-4666-46C0-8346-9328D1D76D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A11396CD-4666-46C0-8346-9328D1D76D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{585769D5-99F7-4833-B8A1-11E1256F3FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{585769D5-99F7-4833-B8A1-11E1256F3FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{585769D5-99F7-4833-B8A1-11E1256F3FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{585769D5-99F7-4833-B8A1-11E1256F3FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42D438B9-8CAA-4089-A053-6C856C9974EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D438B9-8CAA-4089-A053-6C856C9974EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D438B9-8CAA-4089-A053-6C856C9974EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D438B9-8CAA-4089-A053-6C856C9974EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

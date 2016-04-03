@@ -33,6 +33,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,37 +45,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elements\BaseElement.cs" />
-    <Compile Include="Elements\DebugElements\DebugLog.cs" />
-    <Compile Include="Elements\DebugElements\ElementsDefenition.cs" />
-    <Compile Include="Elements\DebugElements\SleepElement.cs" />
-    <Compile Include="Elements\Logic\Branch.cs" />
-    <Compile Include="Elements\Logic\Counter.cs" />
-    <Compile Include="Elements\Logic\ElementsDefenition.cs" />
-    <Compile Include="Elements\Logic\Predicate.cs" />
-    <Compile Include="Elements\Logic\Repeat.cs" />
-    <Compile Include="Elements\MathElements\AdditionElement.cs" />
-    <Compile Include="Elements\MathElements\DivisionElement.cs" />
-    <Compile Include="Elements\MathElements\ElementsDefenition.cs" />
-    <Compile Include="Elements\MathElements\MathElement.cs" />
-    <Compile Include="Elements\MathElements\MultiplyElement.cs" />
-    <Compile Include="Elements\MathElements\RandomElement.cs" />
-    <Compile Include="Elements\MathElements\SubtractionElement.cs" />
-    <Compile Include="Elements\ProcessorElement.cs" />
-    <Compile Include="Elements\ReceiverElement.cs" />
-    <Compile Include="Elements\ReceiverWithHandlerElement.cs" />
-    <Compile Include="Elements\Types\ElementsDefenition.cs" />
-    <Compile Include="Elements\Types\NetTypeElement.cs" />
+    <Compile Include="Model\Node.cs" />
+    <Compile Include="Nodes\Debug\DebugLog.cs" />
+    <Compile Include="Nodes\Debug\Defenitions.cs" />
+    <Compile Include="Nodes\Debug\SleepNode.cs" />
+    <Compile Include="Nodes\Logic\Branch.cs" />
+    <Compile Include="Nodes\Logic\Counter.cs" />
+    <Compile Include="Nodes\Logic\Defenitions.cs" />
+    <Compile Include="Nodes\Logic\Predicate.cs" />
+    <Compile Include="Nodes\Logic\Repeat.cs" />
+    <Compile Include="Nodes\Math\AdditionNode.cs" />
+    <Compile Include="Nodes\Math\DivisionNode.cs" />
+    <Compile Include="Nodes\Math\Defenitions.cs" />
+    <Compile Include="Nodes\Math\MathNode.cs" />
+    <Compile Include="Nodes\Math\MultiplyNode.cs" />
+    <Compile Include="Nodes\Math\RandomNode.cs" />
+    <Compile Include="Nodes\Math\SubtractionNode.cs" />
+    <Compile Include="Nodes\Types\Defenitions.cs" />
+    <Compile Include="Nodes\Types\NetTypeNode.cs" />
     <Compile Include="Model\BaseContainer.cs" />
-    <Compile Include="Model\CachedInputPin.cs" />
     <Compile Include="Model\Connection.cs" />
-    <Compile Include="Model\ElementGroupDefenition.cs" />
-    <Compile Include="Model\ElementItemDefenition.cs" />
+    <Compile Include="Model\NodeGroupDefenition.cs" />
+    <Compile Include="Model\NodeDefenition.cs" />
     <Compile Include="Model\IConnection.cs" />
     <Compile Include="Model\IContainer.cs" />
-    <Compile Include="Model\IElement.cs" />
-    <Compile Include="Model\IInputPin.cs" />
     <Compile Include="Model\INode.cs" />
+    <Compile Include="Model\IInputPin.cs" />
+    <Compile Include="Model\IConatinerNode.cs" />
+    <Compile Include="Model\InputPin.cs" />
     <Compile Include="Model\IOutputPin.cs" />
     <Compile Include="Model\IPin.cs" />
     <Compile Include="Model\OutputPin.cs" />
@@ -88,11 +89,13 @@
     <Compile Include="Model\Serialization\PersisterReader.cs" />
     <Compile Include="Model\Serialization\PersisterWriter.cs" />
     <Compile Include="Model\Serialization\ReferenceManager.cs" />
-    <Compile Include="Model\TouchPin.cs" />
     <Compile Include="Model\Utilities\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="WellKnownGroups.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
