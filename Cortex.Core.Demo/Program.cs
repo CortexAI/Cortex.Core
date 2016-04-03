@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Cortex.Core.Model;
-using Cortex.Core.Nodes.Debug;
 using Cortex.Core.Nodes.Math;
 using Cortex.Core.Nodes.Types;
+using Cortex.Core.Nodes.Util;
 
 namespace Cortex.Core.Demo
 {
