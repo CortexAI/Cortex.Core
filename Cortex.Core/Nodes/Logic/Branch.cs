@@ -18,7 +18,7 @@ namespace Cortex.Core.Nodes.Logic
 
         protected override void Handler()
         {
-            if (_condition.Get())
+            if (_condition.Take())
                 _onTrue.Emit(true);
             else
                 _onFalse.Emit(false);

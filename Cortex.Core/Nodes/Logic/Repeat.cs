@@ -15,7 +15,8 @@ namespace Cortex.Core.Nodes.Logic
 
         protected override void Handler()
         {
-            for (var i = 0; i < _times.Get(); i++)
+            var times = _times.Take();
+            for (var i = 0; i < times; i++)
                 _index.Emit(i);
         }
     }

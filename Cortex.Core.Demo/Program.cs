@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Cortex.Core.Model;
-using Cortex.Core.Nodes.Math;
+using Cortex.Core.Nodes.Logic;
 using Cortex.Core.Nodes.Types;
 using Cortex.Core.Nodes.Util;
 
@@ -11,6 +11,7 @@ namespace Cortex.Core.Demo
     {
         static void Main(string[] args)
         {
+            /*
             var source1 = new NetTypeNode<int>(10);
             var source2 = new NetTypeNode<int>(20);
             var add = new AdditionNode();
@@ -28,6 +29,20 @@ namespace Cortex.Core.Demo
             graph.AddConnection(c1);
             graph.AddConnection(c2);
             graph.AddConnection(c3);
+
+            var session = new Session(graph);
+            session.Start();*/
+            
+            var source = new NetTypeNode<int>(100);
+            var repeat = new Repeat();
+            var log = new DebugLog();
+
+            var graph = new ProcessGraph();
+            graph.AddElement(source);
+            graph.AddElement(repeat);
+            graph.AddElement(log);
+            graph.AddConnection(new Connection(source, source.Output, repeat, repeat.Inputs.First()));
+            graph.AddConnection(new Connection(repeat, repeat.Outputs.First(), log, log.Inputs.First()));
 
             var session = new Session(graph);
             session.Start();

@@ -19,7 +19,7 @@ namespace Cortex.Core.Nodes.Logic
 
         protected override void Handler()
         {
-            _res.Emit(Process(_a.Get(),_b.Get()));
+            _res.Emit(Process(_a.Take(),_b.Take()));
         }
 
         protected abstract bool Process(double a, double b);

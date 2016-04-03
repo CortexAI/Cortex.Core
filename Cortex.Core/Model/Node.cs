@@ -23,7 +23,7 @@ namespace Cortex.Core.Model
 
         public virtual void Init(CancellationToken token)
         {
-            Task.Factory.StartNew(TaskMethod, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            Task.Factory.StartNew(TaskMethod, token, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         public virtual void Save(IPersisterWriter writer)
@@ -46,14 +46,16 @@ namespace Cortex.Core.Model
 
         protected abstract void Handler();
 
-        private void TaskMethod()
+        private void TaskMethod(object token)
         {
             var newItemHandles = _inputs.Select(i => (WaitHandle)i.NewItem).ToArray();
-            while (true)
+            while (!((CancellationToken)token).IsCancellationRequested)
             {
                 WaitHandle.WaitAny(newItemHandles);
+                // ToDo: Pass arguments from pins ?
                 Handler();
             }
+            ((CancellationToken)token).ThrowIfCancellationRequested();
         }
     }
 }

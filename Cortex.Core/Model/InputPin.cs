@@ -37,31 +37,28 @@ namespace Cortex.Core.Model
         /// </summary>
         /// <param name="item">Output item</param>
         /// <returns></returns>
-        public bool TryGet(out T item)
+        public bool TryTake(out T item)
         {
-            //_newItemEvent.WaitOne(Timeout.Infinite);
             if (_queue.Count > 1)
-            {
-                var res = _queue.TryDequeue(out item);
-                _newItemEvent.Reset();
-                return res;
-            }
+                return _queue.TryDequeue(out item);
             
             var peekRes = _queue.TryPeek(out item);
-            _newItemEvent.Reset();
+            if(peekRes)
+                _newItemEvent.Reset();
             return peekRes;
         }
-
 
         /// <summary>
         /// Will wait until item is available.
         /// </summary>
         /// <returns>Queued item</returns>
-        public T Get()
+        public T Take()
         {
             T item;
-            TryGet(out item);
-            return item;
+            if(TryTake(out item))
+                return item;
+            else
+                throw new InvalidOperationException("Can't take item from queue");
         }
     }
 }

@@ -18,10 +18,8 @@ namespace Cortex.Core.Nodes.Util
 
         protected override void Handler()
         {
-            Thread.Sleep(_time.Get());
+            Thread.Sleep(_time.Take());
             _output.Emit(null);
         }
-
-        
     }
 }

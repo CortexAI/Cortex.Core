@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cortex.Core.Model;
@@ -9,22 +8,16 @@ namespace Cortex.Core
     public class Session : IDisposable
     {
         private readonly ProcessGraph _processGraph;
-        private Thread _thread;
+        private Task _task;
+        private CancellationTokenSource _cts;
 
         public Session(ProcessGraph processGraph)
         {
+            _cts = new CancellationTokenSource();
             _processGraph = processGraph;
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                if (_thread == null)
-                    return false;
-                return _thread.IsAlive;
-            }
-        }
+        public bool IsRunning => _task?.IsCompleted == false;
 
         public void Dispose()
         {
@@ -33,29 +26,22 @@ namespace Cortex.Core
 
         public void Start()
         {
-            _thread = new Thread(() =>
+            _task = Task.Factory.StartNew(Handler, _cts.Token, _cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+        }
+
+        private void Handler(object token)
+        {
+            foreach (var element in _processGraph.Elements)
             {
-                foreach (var element in _processGraph.Elements)
-                {
-                    element.Init(CancellationToken.None);
-                }
-            }) {Priority = ThreadPriority.AboveNormal, IsBackground = true };
-            _thread.Start();
+                element.Init((CancellationToken) token);
+            }
         }
 
         public void Stop()
         {
-            if (!IsRunning) return;
-
-            _thread.Interrupt();
-            Task.Delay(2000).ContinueWith(delegate
-            {
-                if (IsRunning)
-                {
-                    _thread.Abort();
-                    _thread = null;
-                }
-            });
+            if (!IsRunning)
+                return;
+            _cts.Cancel();
         }
     }
 }

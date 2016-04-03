@@ -22,7 +22,7 @@ namespace Cortex.Core.Nodes.Math
 
         protected override void Handler()
         {
-            _output.Emit(Calc(_a.Get(),_b.Get()));
+            _output.Emit(Calc(_a.Take(),_b.Take()));
         }
 
         public abstract double Calc(double a, double b);

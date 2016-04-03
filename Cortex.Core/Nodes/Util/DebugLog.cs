@@ -14,7 +14,7 @@ namespace Cortex.Core.Nodes.Util
 
         protected override void Handler()
         {
-            var o = _input.Get();
+            var o = _input.Take();
             System.Diagnostics.Debug.WriteLine(o);
             Console.WriteLine(o);
         }

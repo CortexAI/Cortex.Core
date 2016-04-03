@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Exceptions\PinTypeMismatchException.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Nodes\Util\DebugLog.cs" />
     <Compile Include="Nodes\Util\Defenitions.cs" />

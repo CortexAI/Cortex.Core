@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cortex.Core.Model.Exceptions;
 using Cortex.Core.Model.Utilities;
 
 namespace Cortex.Core.Model
@@ -36,7 +37,7 @@ namespace Cortex.Core.Model
             }
             else
             {
-                throw new InvalidOperationException("Can't attach input pin to this");
+                throw new PinTypeMismatchException();
             }
         }
 
@@ -51,7 +52,7 @@ namespace Cortex.Core.Model
             }
             else
             {
-                throw new InvalidOperationException("Can't attach input pin to this");
+                throw new PinTypeMismatchException();
             }
         }
 
