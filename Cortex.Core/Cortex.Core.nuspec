@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/CortexAI/Cortex.Core</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Release $version$</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>Cortex Core Dataflow Data Flow</tags>
   </metadata>
 </package>
