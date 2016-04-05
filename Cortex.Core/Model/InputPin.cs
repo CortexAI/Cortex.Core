@@ -7,36 +7,49 @@ namespace Cortex.Core.Model
     public class InputPin<T> : IInputPin<T>
     {
         private readonly ConcurrentQueue<T> _queue;
-        private readonly ManualResetEvent _newItemEvent;
+        private readonly ManualResetEventSlim _newItemEvent;
 
-        public WaitHandle NewItem => _newItemEvent;
+        public WaitHandle NewItem => _newItemEvent.WaitHandle;
 
         public string Name { get; }
         public Type Type => typeof(T);
 
-        public void Enqueue(object o)
+        public InputPin(string name)
         {
-            Enqueue((T) Convert.ChangeType(o, typeof (T)));
+            _newItemEvent = new ManualResetEventSlim(false);
+            Name = name;
+            _queue = new ConcurrentQueue<T>();
         }
 
+        /// <summary>
+        /// Casts and adds an item to the queue.
+        /// </summary>
+        /// <param name="o"></param>
+        public void Enqueue(object o)
+        {
+            if (typeof(T) == o.GetType())
+                Enqueue((T) o);
+            else if(typeof(T) != typeof(object))
+                Enqueue((T) Convert.ChangeType(o, typeof (T)));
+            else
+                Enqueue((T) o);
+        }
+
+        /// <summary>
+        /// Enqueues a direct typed item
+        /// </summary>
+        /// <param name="o"></param>
         public void Enqueue(T o)
         {
             _queue.Enqueue(o);
             _newItemEvent.Set();
         }
 
-        public InputPin(string name)
-        {
-            _newItemEvent = new ManualResetEvent(false);
-            Name = name;
-            _queue = new ConcurrentQueue<T>();
-        }
-
         /// <summary>
         /// Return last queued item, if there is only 1 item remaining then it will not be dequeued
         /// </summary>
-        /// <param name="item">Output item</param>
-        /// <returns></returns>
+        /// <param name="item">Queued item</param>
+        /// <returns>Result of dequeue</returns>
         public bool TryTake(out T item)
         {
             if (_queue.Count > 1)
@@ -49,7 +62,7 @@ namespace Cortex.Core.Model
         }
 
         /// <summary>
-        /// Will wait until item is available.
+        /// Tries to take an item from the queue, otherwise throws an exception.
         /// </summary>
         /// <returns>Queued item</returns>
         public T Take()
@@ -57,8 +70,8 @@ namespace Cortex.Core.Model
             T item;
             if(TryTake(out item))
                 return item;
-            else
-                throw new InvalidOperationException("Can't take item from queue");
+
+            throw new InvalidOperationException("Can't take item from queue");
         }
     }
 }

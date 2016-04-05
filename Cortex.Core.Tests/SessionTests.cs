@@ -1,5 +1,4 @@
-﻿using Cortex.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading;
 using Cortex.Core.Model;
