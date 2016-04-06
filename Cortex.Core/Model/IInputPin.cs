@@ -4,7 +4,7 @@ namespace Cortex.Core.Model
 {
     public interface IInputPin: IPin
     {
-        WaitHandle NewItem { get; }
+        WaitHandle ReadyHandle { get; }
         void Enqueue(object item);
     }
 

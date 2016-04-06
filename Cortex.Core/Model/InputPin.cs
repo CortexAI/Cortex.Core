@@ -7,17 +7,19 @@ namespace Cortex.Core.Model
     public class InputPin<T> : IInputPin<T>
     {
         private readonly ConcurrentQueue<T> _queue;
-        private readonly ManualResetEventSlim _newItemEvent;
+        private readonly ManualResetEventSlim _readyEvent;
+        private readonly bool _shouldCacheLastItem;
 
-        public WaitHandle NewItem => _newItemEvent.WaitHandle;
+        public WaitHandle ReadyHandle => _readyEvent.WaitHandle;
 
         public string Name { get; }
         public Type Type => typeof(T);
 
-        public InputPin(string name)
+        public InputPin(string name, bool shouldCacheLastItem = false)
         {
-            _newItemEvent = new ManualResetEventSlim(false);
             Name = name;
+            _readyEvent = new ManualResetEventSlim(false);
+            _shouldCacheLastItem = shouldCacheLastItem;
             _queue = new ConcurrentQueue<T>();
         }
 
@@ -42,7 +44,7 @@ namespace Cortex.Core.Model
         public void Enqueue(T o)
         {
             _queue.Enqueue(o);
-            _newItemEvent.Set();
+            _readyEvent.Set();
         }
 
         /// <summary>
@@ -52,13 +54,13 @@ namespace Cortex.Core.Model
         /// <returns>Result of dequeue</returns>
         public bool TryTake(out T item)
         {
-            if (_queue.Count > 1)
-                return _queue.TryDequeue(out item);
-            
-            var peekRes = _queue.TryPeek(out item);
-            if(peekRes)
-                _newItemEvent.Reset();
-            return peekRes;
+            if (_queue.Count == 1 && _shouldCacheLastItem)
+                return _queue.TryPeek(out item);
+
+            var res = _queue.TryDequeue(out item);
+            if(res && _queue.IsEmpty)
+                _readyEvent.Reset();
+            return res;
         }
 
         /// <summary>

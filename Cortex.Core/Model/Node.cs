@@ -48,10 +48,10 @@ namespace Cortex.Core.Model
 
         private void TaskMethod(object token)
         {
-            var newItemHandles = _inputs.Select(i => (WaitHandle)i.NewItem).ToArray();
+            var newItemHandles = _inputs.Select(i => (WaitHandle)i.ReadyHandle).ToArray();
             while (!((CancellationToken)token).IsCancellationRequested)
             {
-                WaitHandle.WaitAny(newItemHandles);
+                WaitHandle.WaitAll(newItemHandles);
                 // ToDo: Pass arguments from pins ?
                 Handler();
             }
