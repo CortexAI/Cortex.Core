@@ -1,8 +1,10 @@
 ﻿using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Nodes.Logic
 {
-    public abstract class Predicate : Node
+    public abstract class Predicate : BaseNode
     {
         private readonly OutputPin<bool> _res = new OutputPin<bool>("Result");
         protected readonly InputPin<double> _a;

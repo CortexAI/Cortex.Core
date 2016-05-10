@@ -1,10 +1,10 @@
 namespace Cortex.Core.Nodes.Math
 {
-    public class SubtractionNode : MathNode
+    public class Addition : MathBaseNode
     {
         public override double Calc(double a, double b)
         {
-            return a - b;
+            return a + b;
         }
     }
 }

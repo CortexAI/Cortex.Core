@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cortex.Core.Model.Nodes;
 using Cortex.Core.Model.Serialization;
 
 namespace Cortex.Core.Model

@@ -11,22 +11,22 @@ namespace Cortex.Core.Nodes.Math
 
         [Export] 
         public static NodeDefenition AddElement =
-            new NodeDefenition<AdditionNode>(MathNodes, "Addition (+)", null, "Simple addition");
+            new NodeDefenition<Addition>(MathNodes, "Addition (+)", null, "Simple addition");
 
         [Export] 
         public static NodeDefenition Subtract =
-            new NodeDefenition<SubtractionNode>(MathNodes, "Subtraction (-)", null, "Simple subtraction");
+            new NodeDefenition<Subtraction>(MathNodes, "Subtraction (-)", null, "Simple subtraction");
 
         [Export] 
         public static NodeDefenition Division =
-            new NodeDefenition<DivisionNode>(MathNodes, "Division (/)", null, "Simple division");
+            new NodeDefenition<Division>(MathNodes, "Division (/)", null, "Simple division");
 
         [Export] 
         public static NodeDefenition Multiply =
-            new NodeDefenition<MultiplyNode>(MathNodes, "Multiplication (*)", null, "Simple multiplication");
+            new NodeDefenition<Multiply>(MathNodes, "Multiplication (*)", null, "Simple multiplication");
 
         [Export]
         public static NodeDefenition Random =
-            new NodeDefenition<RandomNode>(MathNodes, "Random", null, "Generates random value in (0,1) range");
+            new NodeDefenition<Random>(MathNodes, "Random", null, "Generates random value in (0,1) range");
     }
 }

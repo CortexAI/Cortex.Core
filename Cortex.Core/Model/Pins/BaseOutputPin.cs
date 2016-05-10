@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using Cortex.Core.Model.Exceptions;
 using Cortex.Core.Model.Utilities;
 
-namespace Cortex.Core.Model
+namespace Cortex.Core.Model.Pins
 {
-    public class OutputPin<T> : IOutputPin<T>
+    public abstract class BaseOutputPin<T> : IOutputPin<T>
     {
-        public void Emit(T o)
-        {
-            foreach (var listener in _listeners)
-            {
-                listener.Enqueue(o);
-            }
-        }
+        public abstract void Emit(T o);
 
         public string Name { get; }
         public Type Type => typeof(T);
         public IEnumerable<IInputPin> Listeners => _listeners;
 
-        private readonly List<IInputPin> _listeners = new List<IInputPin>();
+        protected readonly List<IInputPin> _listeners = new List<IInputPin>();
 
-        public OutputPin(string name)
+        protected BaseOutputPin(string name)
         {
             Name = name;
         }
@@ -30,7 +24,7 @@ namespace Cortex.Core.Model
         {
             if (input != null)
             {
-                if (typeof (T).IsCastableTo(input.Type))
+                if (typeof(T).IsCastableTo(input.Type))
                 {
                     _listeners.Add(input);
                 }
@@ -45,7 +39,7 @@ namespace Cortex.Core.Model
         {
             if (input != null)
             {
-                if (typeof (T).IsCastableTo(typeof (TInput)))
+                if (typeof(T).IsCastableTo(typeof(TInput)))
                 {
                     _listeners.Add(input);
                 }

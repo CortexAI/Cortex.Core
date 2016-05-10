@@ -2,46 +2,51 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Cortex.Core.Model
+namespace Cortex.Core.Model.Pins
 {
+    /// <summary>
+    /// Queued implementation of input pin. Values posted to this pin
+    /// will be automatically queued and dequeued accroding to Take and Post calls.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class InputPin<T> : IInputPin<T>
     {
         private readonly ConcurrentQueue<T> _queue;
         private readonly ManualResetEventSlim _readyEvent;
-        private readonly bool _shouldCacheLastItem;
+        private readonly TakeBehaviour _takeBehaviour;
 
         public WaitHandle ReadyHandle => _readyEvent.WaitHandle;
 
         public string Name { get; }
         public Type Type => typeof(T);
 
-        public InputPin(string name, bool shouldCacheLastItem = false)
+        public InputPin(string name, TakeBehaviour takeBehaviour = TakeBehaviour.Consume)
         {
             Name = name;
             _readyEvent = new ManualResetEventSlim(false);
-            _shouldCacheLastItem = shouldCacheLastItem;
             _queue = new ConcurrentQueue<T>();
+            _takeBehaviour = takeBehaviour;
         }
 
         /// <summary>
         /// Casts and adds an item to the queue.
         /// </summary>
         /// <param name="o"></param>
-        public void Enqueue(object o)
+        public void Post(object o)
         {
             if (typeof(T) == o.GetType())
-                Enqueue((T) o);
+                Post((T) o);
             else if(typeof(T) != typeof(object))
-                Enqueue((T) Convert.ChangeType(o, typeof (T)));
+                Post((T) Convert.ChangeType(o, typeof (T)));
             else
-                Enqueue((T) o);
+                Post((T) o);
         }
 
         /// <summary>
         /// Enqueues a direct typed item
         /// </summary>
         /// <param name="o"></param>
-        public void Enqueue(T o)
+        public void Post(T o)
         {
             _queue.Enqueue(o);
             _readyEvent.Set();
@@ -54,7 +59,7 @@ namespace Cortex.Core.Model
         /// <returns>Result of dequeue</returns>
         public bool TryTake(out T item)
         {
-            if (_queue.Count == 1 && _shouldCacheLastItem)
+            if (_takeBehaviour == TakeBehaviour.CacheLast && _queue.Count == 1)
                 return _queue.TryPeek(out item);
 
             var res = _queue.TryDequeue(out item);

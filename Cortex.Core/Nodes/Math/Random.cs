@@ -1,18 +1,20 @@
 using System;
 using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Nodes.Math
 {
-    public class RandomNode : Node
+    public class Random : BaseNode
     {
         private readonly OutputPin<double> _output = new OutputPin<double>("Random");
-        private readonly Random _random;
+        private readonly System.Random _random;
 
-        public RandomNode()
+        public Random()
         {
             AddInputPin(new InputPin<object>("Generate"));
             AddOutputPin(_output);
-            _random = new Random();
+            _random = new System.Random();
         }
 
         protected override void Handler()

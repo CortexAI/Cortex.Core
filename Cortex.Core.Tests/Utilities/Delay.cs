@@ -1,9 +1,11 @@
 ﻿using System.Threading;
 using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Tests.Utilities
 {
-    class Delay : Node
+    class Delay : BaseNode
     {
         private readonly InputPin<object> _input;
         private readonly OutputPin<object> _output;

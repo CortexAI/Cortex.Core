@@ -1,11 +1,13 @@
 using System;
 using System.Threading;
 using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 using Cortex.Core.Model.Serialization;
 
 namespace Cortex.Core.Nodes.Types
 {
-    public class NetTypeNode<T> : Node
+    public class NetTypeNode<T> : BaseNode
     {
         private readonly OutputPin<T> _valuePin = new OutputPin<T>("Value");
 

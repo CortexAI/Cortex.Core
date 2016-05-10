@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Cortex.Core.Model
+namespace Cortex.Core.Model.Pins
 {
     public interface IOutputPin : IPin
     {

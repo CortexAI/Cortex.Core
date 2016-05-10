@@ -1,9 +1,11 @@
 using System;
 using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Nodes.Util
 {
-    public class DebugLog : Node
+    public class DebugLog : BaseNode
     {
         private readonly InputPin<object> _input = new InputPin<object>("Object");
 

@@ -1,8 +1,10 @@
 ﻿using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Nodes.Logic
 {
-    public class Repeat : Node
+    public class Repeat : BaseNode
     {
         private readonly OutputPin<int> _index = new OutputPin<int>("Index");
         private readonly InputPin<int> _times = new InputPin<int>("Times");

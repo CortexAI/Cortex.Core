@@ -1,4 +1,5 @@
 ﻿using System;
+using Cortex.Core.Model.Nodes;
 
 namespace Cortex.Core.Model
 {

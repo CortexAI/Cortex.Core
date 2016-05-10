@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 using Cortex.Core.Model.Serialization;
 
 namespace Cortex.Core.Model

@@ -14,7 +14,7 @@ namespace Cortex.Core.Demo
             /*
             var source1 = new NetTypeNode<int>(10);
             var source2 = new NetTypeNode<int>(20);
-            var add = new AdditionNode();
+            var add = new Addition();
             var log = new DebugLog();
 
             var c1 = new Connection(source1, source1.Output, add, add.A);

@@ -1,15 +1,17 @@
 ﻿using System.Threading;
 using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Nodes.Util
 {
-    internal class SleepNode : Node
+    internal class Sleep : BaseNode
     {
         private readonly InputPin<object> _touch = new InputPin<object>("Start sleep");
         private readonly InputPin<int> _time = new InputPin<int>("Time");
         private readonly OutputPin<object> _output = new OutputPin<object>("End");
 
-        public SleepNode()
+        public Sleep()
         {
             AddInputPin(_touch);
             AddInputPin(_time);

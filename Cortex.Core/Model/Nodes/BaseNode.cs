@@ -2,16 +2,17 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cortex.Core.Model.Pins;
 using Cortex.Core.Model.Serialization;
 
-namespace Cortex.Core.Model
+namespace Cortex.Core.Model.Nodes
 {
-    public abstract class Node : INode
+    public abstract class BaseNode : INode
     {
         private readonly List<IInputPin> _inputs;
         private readonly List<IOutputPin> _outputs;
 
-        protected Node()
+        protected BaseNode()
         {
             _inputs = new List<IInputPin>();
             _outputs = new List<IOutputPin>();
@@ -48,11 +49,10 @@ namespace Cortex.Core.Model
 
         private void TaskMethod(object token)
         {
-            var newItemHandles = _inputs.Select(i => (WaitHandle)i.ReadyHandle).ToArray();
+            var waitHandles = _inputs.Select(i => i.ReadyHandle).ToArray();
             while (!((CancellationToken)token).IsCancellationRequested)
             {
-                WaitHandle.WaitAll(newItemHandles);
-                // ToDo: Pass arguments from pins ?
+                WaitHandle.WaitAll(waitHandles);
                 Handler();
             }
             ((CancellationToken)token).ThrowIfCancellationRequested();

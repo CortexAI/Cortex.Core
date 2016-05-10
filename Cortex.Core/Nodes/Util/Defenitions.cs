@@ -15,6 +15,6 @@ namespace Cortex.Core.Nodes.Util
 
         [Export] 
         public static NodeDefenition SleepElement =
-            new NodeDefenition<SleepNode>(DebugNodes, "Sleep", null, "Thread sleep");
+            new NodeDefenition<Sleep>(DebugNodes, "Sleep", null, "Thread sleep");
     }
 }

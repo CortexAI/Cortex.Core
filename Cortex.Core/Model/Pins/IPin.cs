@@ -1,6 +1,6 @@
 using System;
 
-namespace Cortex.Core.Model
+namespace Cortex.Core.Model.Pins
 {
     public interface IPin
     {

@@ -1,9 +1,11 @@
 ﻿using System.Threading;
 using Cortex.Core.Model;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Nodes.Logic
 {
-    public class Counter : Node
+    public class Counter : BaseNode
     {
         private readonly OutputPin<int> _counterPin = new OutputPin<int>("Count");
 

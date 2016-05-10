@@ -1,4 +1,6 @@
 using System;
+using Cortex.Core.Model.Nodes;
+using Cortex.Core.Model.Pins;
 
 namespace Cortex.Core.Model
 {
